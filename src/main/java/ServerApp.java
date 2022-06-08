@@ -15,13 +15,25 @@ public class ServerApp {
              PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
              BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));) {
 
-            System.out.println("New connection accepted");
+            // запрашиваем имя клиента
+            out.println("Write your name");
 
-            // считываем поток
+            // считываем поток и запоминаем имя
             String name = in.readLine();
 
-            // отправляем ответ
-            out.println(String.format("Hi %s, your port is %d", name, clientSocket.getPort()));
+            // уточняем возраст и записываем ответ
+            out.println(String.format("%s, are you a child? (yes/no)", name));
+            String resp = in.readLine();
+
+            // если клиент ребенок, то приглашаем на игровую площадку
+            if (resp.equals("yes")) {
+                out.println(String.format("Welcome to the kids area, %s! Let's play!", name));
+                // если клиент взрослый, то приглашаем в пространство для взрослых
+            } else if (resp.equals("no")) {
+                out.println(String.format
+                        ("Welcome to the adult zone, %s! Have a good rest, or a good working day!", name));
+            }
+            System.out.println(resp);
 
         } catch (IOException e) {
             e.printStackTrace();
